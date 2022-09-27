@@ -5,11 +5,11 @@ export const Container = styled.View`
   justify-content: center;
   align-items: center;
 
-  background-color: #999;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `
 
 export const Title = styled.Text`
+  font-family: ${({ theme }) => theme.FONTS.BOLD};
   font-size: 24px;
-  font-weight: bold;
-  color: #f4f4f4;
+  color: ${({ theme }) => theme.COLORS.TITLE};
 `
