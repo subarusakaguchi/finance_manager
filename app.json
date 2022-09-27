@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "finances_manager",
+    "slug": "finances_manager",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
