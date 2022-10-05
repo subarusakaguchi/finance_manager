@@ -5,6 +5,7 @@ import { ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTheme } from "styled-components";
 import { HighlightCard } from "../../components/HighlightCard";
+import { LastTransaction } from "../../components/HighlightCard/styles";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
 
 import {
@@ -25,14 +26,15 @@ import {
   LoadContainer
 } from "./styles";
 
-interface HighlighProps {
+interface HighlightProps {
   amount: string;
+  lastTransaction: string;
 }
 
 interface HighlighData {
-  entries: HighlighProps;
-  expenses: HighlighProps;
-  total: HighlighProps;
+  entries: HighlightProps;
+  expenses: HighlightProps;
+  total: HighlightProps;
 }
 
 export interface DataListProps extends TransactionCardProps {
@@ -45,6 +47,25 @@ export function Dashboard() {
   const [highlightData, setHighlighData] = useState<HighlighData>({} as HighlighData);
 
   const theme = useTheme()
+
+  function getLastTransactionDate(
+    collection: DataListProps[],
+    type: 'positive' | 'negative'
+  ) {
+    const lastTransactionEntries = collection
+      .filter(transaction => transaction.type === type)
+      .map(transaction => new Date(transaction.date).getTime())
+
+    const lastTransactionDate = new Date(Math.max.apply(Math, lastTransactionEntries))
+
+    const lastTransactionDateFormatted =
+      `${lastTransactionDate.getDate()} de ${lastTransactionDate.toLocaleDateString('pt-BR', {
+        month: 'long'
+      })}`
+
+
+    return lastTransactionDateFormatted
+  }
 
   async function loadTransactions() {
     const dataKey = '@finance_manager:transactions'
@@ -81,24 +102,32 @@ export function Dashboard() {
     })
 
     setTransactions(transactionsFormatted)
+
+    const lastDateEntry = getLastTransactionDate(transactions, 'positive');
+    const lastDateExpense = getLastTransactionDate(transactions, 'negative');
+    const totalInterval = `1 a ${lastDateExpense}`
+
     setHighlighData({
       entries: {
         amount: entriesTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: `última entrada dia ${lastDateEntry}`
       },
       expenses: {
         amount: expensesTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: `última saída dia ${lastDateExpense}`
       },
       total: {
         amount: (entriesTotal - expensesTotal).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: totalInterval
       }
     })
 
@@ -148,19 +177,19 @@ export function Dashboard() {
             <HighlightCard
               title="Entrada"
               amount={highlightData.entries.amount}
-              lastTransaction="Última transação dia 13 de abril"
+              lastTransaction={highlightData.entries.lastTransaction}
               type="up"
             />
             <HighlightCard
               title="Saída"
               amount={highlightData.expenses.amount}
-              lastTransaction="Última transação dia 13 de abril"
+              lastTransaction={highlightData.expenses.lastTransaction}
               type="down"
             />
             <HighlightCard
               title="Total"
               amount={highlightData.total.amount}
-              lastTransaction="Última transação dia 13 de abril"
+              lastTransaction={highlightData.total.lastTransaction}
               type="total"
             />
           </HighlightCards>
