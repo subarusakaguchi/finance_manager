@@ -37,7 +37,7 @@ export interface FormData {
 }
 
 type NavigationProps = {
-  navigate:(screen:string) => void;
+  navigate: (screen: string) => void;
 }
 
 const schema = Yup.object().shape({
@@ -50,10 +50,8 @@ export function Register() {
     key: 'category',
     name: 'Categoria'
   })
-  const [transactionType, setTransactionType] = useState<'up' | 'down' | undefined>()
+  const [transactionType, setTransactionType] = useState<'positive' | 'negative' | undefined>()
   const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false)
-
-  const dataKey = '@finance_manager:transactions'
 
   const {
     control,
@@ -66,7 +64,7 @@ export function Register() {
 
   const navigation = useNavigation<NavigationProps>()
 
-  function handleTransactionTypeButtonSelect(typeSelected: 'up' | 'down') {
+  function handleTransactionTypeButtonSelect(typeSelected: 'positive' | 'negative') {
     setTransactionType(typeSelected);
   }
 
@@ -91,12 +89,14 @@ export function Register() {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date()
     }
 
     try {
+      const dataKey = '@finance_manager:transactions'
+
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
 
@@ -115,13 +115,13 @@ export function Register() {
       })
 
       navigation.navigate("Listagem")
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       Alert.alert('Não foi possível salvar os dados!')
     }
   }
 
-  return(
+  return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
         <Header>
@@ -148,14 +148,14 @@ export function Register() {
               <TransactionTypeButton
                 title='Income'
                 type="up"
-                onPress={() => handleTransactionTypeButtonSelect('up')}
-                isActive={transactionType === 'up'}
+                onPress={() => handleTransactionTypeButtonSelect('positive')}
+                isActive={transactionType === 'positive'}
               />
               <TransactionTypeButton
                 title='Outcome'
                 type="down"
-                onPress={() => handleTransactionTypeButtonSelect('down')}
-                isActive={transactionType === 'down'}
+                onPress={() => handleTransactionTypeButtonSelect('negative')}
+                isActive={transactionType === 'negative'}
               />
             </TransactionsTypes>
             <CategorySelectButton
