@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { FlatList, FlatListProps } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
-import { FontAwesome  } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 import { DataListProps } from '.';
@@ -73,7 +73,7 @@ export const PowerOffIcon = styled(FontAwesome).attrs({
 export const HighlightCards = styled.ScrollView.attrs({
   horizontal: true,
   showsHorizontalScrollIndicator: false,
-  contentContainerStyle: {paddingLeft: 24, paddingRight: 150}
+  contentContainerStyle: { paddingLeft: 24, paddingRight: 150 }
 })`
   width: 100%;
 
@@ -98,7 +98,13 @@ export const Title = styled.Text`
 
 export const TransactionsList = styled(
   FlatList as new (props: FlatListProps<DataListProps>) => FlatList<DataListProps>
-  ).attrs({
+).attrs({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: {paddingBottom: getBottomSpace() + 20}
+  contentContainerStyle: { paddingBottom: getBottomSpace() + 20 }
 })``
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`

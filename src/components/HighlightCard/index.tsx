@@ -28,7 +28,7 @@ export function HighlightCard({
   amount,
   lastTransaction
 }: HighlightCardProps) {
-  return(
+  return (
     <Container type={type}>
       <Header>
         <Title type={type}>{title}</Title>
@@ -37,7 +37,7 @@ export function HighlightCard({
       </Header>
 
       <Footer>
-        <Amount type={type}>R$ {amount}</Amount>
+        <Amount type={type}>{amount}</Amount>
         <LastTransaction type={type}>{lastTransaction}</LastTransaction>
       </Footer>
     </Container>
