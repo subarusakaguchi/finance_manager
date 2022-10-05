@@ -14,6 +14,7 @@ import { Loading } from './src/components/Loading';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { AppRoutes } from './src/components/routes/app.routes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,12 +24,14 @@ export default function App() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      {fontsLoaded ? (
-        <NavigationContainer>
-          <AppRoutes />
-        </NavigationContainer>
-      ) : <Loading />}
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        {fontsLoaded ? (
+          <NavigationContainer>
+            <AppRoutes />
+          </NavigationContainer>
+        ) : <Loading />}
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

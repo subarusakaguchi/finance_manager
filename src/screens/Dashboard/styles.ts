@@ -5,6 +5,7 @@ import { FontAwesome  } from '@expo/vector-icons'
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 import { DataListProps } from '.';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -59,6 +60,8 @@ export const UserName = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.FONTS.BOLD};
 `;
+
+export const LogoutButton = styled(BorderlessButton)``;
 
 export const PowerOffIcon = styled(FontAwesome).attrs({
   name: 'power-off',

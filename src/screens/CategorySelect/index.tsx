@@ -13,6 +13,7 @@ import {
   Separator,
   Footer
 } from './styles';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface Category {
   key: string;
@@ -58,10 +59,12 @@ export function CategorySelect({
       />
 
       <Footer>
-        <Button
-          title='SELECIONAR'
-          onPress={closeSelectCategory}
-        />
+        <GestureHandlerRootView>
+          <Button
+            title='SELECIONAR'
+            onPress={closeSelectCategory}
+          />
+        </GestureHandlerRootView>
       </Footer>
     </Container>
   );
