@@ -47,7 +47,7 @@ export function Resume() {
       const newDate = addMonths(selectedDate, 1)
 
       setSelectedDate(newDate)
-    } else {
+    } else if (action === 'prev') {
       const newDate = subMonths(selectedDate, 1)
 
       setSelectedDate(newDate)

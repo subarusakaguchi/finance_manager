@@ -18,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppRoutes } from './src/components/routes/app.routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
+import { SignIn } from './src/screens/SignIn';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,7 +33,7 @@ export default function App() {
         {fontsLoaded ? (
           <NavigationContainer>
             <StatusBar barStyle='light-content' />
-            <AppRoutes />
+            <SignIn />
           </NavigationContainer>
         ) : <Loading />}
       </ThemeProvider>
