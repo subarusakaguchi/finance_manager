@@ -1,7 +1,9 @@
 {
   "expo": {
+    "owner": "subaru_sakaguchi",
     "name": "finances_manager",
-    "slug": "finances_manager",
+    "slug": "finances-manager",
+    "scheme": "finances-manager",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
