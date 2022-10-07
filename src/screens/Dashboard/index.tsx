@@ -53,8 +53,14 @@ export function Dashboard() {
     collection: DataListProps[],
     type: 'positive' | 'negative'
   ) {
-    const lastTransactionEntries = collection
+    const filteredCollection = collection
       .filter(transaction => transaction.type === type)
+
+    if (filteredCollection.length === 0) {
+      return 0
+    }
+
+    const lastTransactionEntries = filteredCollection
       .map(transaction => new Date(transaction.date).getTime())
 
     const lastTransactionDate = new Date(Math.max.apply(Math, lastTransactionEntries))
@@ -106,7 +112,9 @@ export function Dashboard() {
 
     const lastDateEntry = getLastTransactionDate(transactions, 'positive');
     const lastDateExpense = getLastTransactionDate(transactions, 'negative');
-    const totalInterval = `1 a ${lastDateExpense}`
+    const totalInterval = lastDateExpense === 0
+      ? 'Não há transações'
+      : `1 a ${lastDateExpense}`
 
     setHighlighData({
       entries: {
@@ -114,14 +122,18 @@ export function Dashboard() {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `última entrada dia ${lastDateEntry}`
+        lastTransaction: lastDateEntry === 0
+          ? 'Não há transações'
+          : `última entrada dia ${lastDateEntry}`
       },
       expenses: {
         amount: expensesTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `última saída dia ${lastDateExpense}`
+        lastTransaction: lastDateExpense === 0
+          ? 'Não há transações'
+          : `última saída dia ${lastDateExpense}`
       },
       total: {
         amount: (entriesTotal - expensesTotal).toLocaleString('pt-BR', {
