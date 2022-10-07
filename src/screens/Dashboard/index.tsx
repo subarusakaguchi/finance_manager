@@ -69,7 +69,7 @@ export function Dashboard() {
   }
 
   async function loadTransactions() {
-    const dataKey = '@finance_manager:transactions'
+    const dataKey = `@finance_manager:transactions_user=${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
     const transactions = response ? JSON.parse(response) : [];
 

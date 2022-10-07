@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from "react-native";
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { addMonths, format, subMonths } from 'date-fns';
@@ -23,6 +23,7 @@ import {
   LoadContainer
 } from './styles';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionData extends TransactionCardProps { }
 
@@ -39,6 +40,8 @@ export function Resume() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalCategories, setTotalCategories] = useState<CategoryData[]>([])
+
+  const { user } = useAuth()
 
   const theme = useTheme()
 
@@ -57,7 +60,7 @@ export function Resume() {
   async function loadData() {
     setIsLoading(true)
 
-    const dataKey = '@finance_manager:transactions'
+    const dataKey = `@finance_manager:transactions_user=${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
     const formattedResponse = response ? JSON.parse(response) : []
 

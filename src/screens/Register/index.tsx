@@ -31,6 +31,7 @@ import {
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 export interface FormData {
   [name: string]: string;
@@ -52,6 +53,8 @@ export function Register() {
   })
   const [transactionType, setTransactionType] = useState<'positive' | 'negative' | undefined>()
   const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false)
+
+  const { user } = useAuth()
 
   const {
     control,
@@ -95,7 +98,7 @@ export function Register() {
     }
 
     try {
-      const dataKey = '@finance_manager:transactions'
+      const dataKey = `@finance_manager:transactions_user=${user.id}`
 
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
