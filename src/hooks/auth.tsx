@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import * as AuthSession from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -32,6 +32,8 @@ interface IAuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>
   signInWithApple(): Promise<void>
+  signOut(): Promise<void>
+  userStorageLoading: boolean
 }
 
 interface AuthResponse {
@@ -45,6 +47,7 @@ export const AuthContext = createContext<IAuthContextData>({} as IAuthContextDat
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
+  const [userStorageLoading, setUserStorageLoading] = useState<boolean>(true)
 
   const dataUserKey = '@finance_manager:user'
 
@@ -85,11 +88,13 @@ function AuthProvider({ children }: AuthProviderProps) {
       })
 
       if (credential) {
+        const name = credential.fullName!.givenName!
+        const avatar = `https://ui-avatars.com/api/?name=${name}&length=1`
         const userInfo: User = {
           id: String(credential.user),
           email: credential.email!,
-          name: credential.fullName?.givenName!,
-          avatar: undefined
+          name,
+          avatar
         }
 
         setUser(userInfo)
@@ -100,11 +105,33 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    setUser({} as User)
+    await AsyncStorage.removeItem(dataUserKey)
+  }
+
+  async function loadUserStorageData() {
+    const data = await AsyncStorage.getItem(dataUserKey);
+
+    if (data) {
+      const userInfo = JSON.parse(data);
+      setUser(userInfo)
+    }
+
+    setUserStorageLoading(false);
+  }
+
+  useEffect(() => {
+    loadUserStorageData()
+  }, [])
+
   return (
     <AuthContext.Provider value={{
       user,
       signInWithGoogle,
-      signInWithApple
+      signInWithApple,
+      signOut,
+      userStorageLoading
     }}>
       {children}
     </AuthContext.Provider>

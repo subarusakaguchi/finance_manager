@@ -14,12 +14,10 @@ import {
 
 import { Loading } from './src/components/Loading';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { AppRoutes } from './src/components/routes/app.routes';
+import { Routes } from './src/routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
-import { SignIn } from './src/screens/SignIn';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,18 +26,19 @@ export default function App() {
     Poppins_700Bold
   });
 
+  const { userStorageLoading } = useAuth()
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
-        {fontsLoaded ? (
-          <NavigationContainer>
+        {(fontsLoaded || userStorageLoading) ? (
+          <>
             <StatusBar barStyle='light-content' />
 
             <AuthProvider>
-              <SignIn />
+              <Routes />
             </AuthProvider>
-
-          </NavigationContainer>
+          </>
         ) : <Loading />}
       </ThemeProvider>
     </GestureHandlerRootView>

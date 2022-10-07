@@ -5,8 +5,8 @@ import { ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTheme } from "styled-components";
 import { HighlightCard } from "../../components/HighlightCard";
-import { LastTransaction } from "../../components/HighlightCard/styles";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
+import { useAuth } from "../../hooks/auth";
 
 import {
   Container,
@@ -42,6 +42,7 @@ export interface DataListProps extends TransactionCardProps {
 }
 
 export function Dashboard() {
+  const { user, signOut } = useAuth()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [transactions, setTransactions] = useState<DataListProps[]>([])
   const [highlightData, setHighlighData] = useState<HighlighData>({} as HighlighData);
@@ -157,15 +158,15 @@ export function Dashboard() {
           <Header>
             <UserContainer>
               <UserInfo>
-                <Photo source={{ uri: 'https://github.com/subarusakaguchi.png' }} />
+                <Photo source={{ uri: user.avatar }} />
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Subaru!</UserName>
+                  <UserName>{user.name}!</UserName>
                 </User>
               </UserInfo>
 
               <GestureHandlerRootView>
-                <LogoutButton onPress={() => { console.log('Teste') }}>
+                <LogoutButton onPress={signOut}>
                   <PowerOffIcon />
                 </LogoutButton>
               </GestureHandlerRootView>

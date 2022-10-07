@@ -57,7 +57,7 @@ export const UserGreeting = styled.Text`
 export const UserName = styled.Text`
   color: ${({ theme }) => theme.COLORS.SHAPE};
 
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   font-family: ${({ theme }) => theme.FONTS.BOLD};
 `;
 
